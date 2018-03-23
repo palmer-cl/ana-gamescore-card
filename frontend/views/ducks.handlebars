@@ -1,0 +1,280 @@
+<div class="container">
+    <div class="row">
+        <div class=" headerbox col-2">
+            <img class="logo" style="float:left;" src="{{visitingTeamImgSrc}}">
+        </div>
+        <div id="middleheader" class="headerbox col-8">
+            {{{header}}}<br>
+            {{{score}}}<br>
+            <span id="date">{{{date}}}</span>
+        </div>
+        <div class="headerbox col-2">
+           <img class="logo" style="float:right;" src="{{homeTeamImgSrc}}">
+        </div>
+    </div>
+
+</div>
+<div class="container">
+    <table id="indextable" style="margin-top: 10px" class="table players table-striped">
+        <thead>
+            <tr>
+                <th class="playername" scope="col">Player</th>
+                <th scope="col">TOI</th>
+                <th scope="col">Goals</th>
+                <th scope="col">Assists</th>
+                <th scope="col">Shots</th>
+                <th scope="col">Blocks</th>
+                <th scope="col">Corsi +/-</th>
+                <th scope="col">Goal +/-</th>
+                <th scope="col">Penalty +/-</th>
+                <th scope="col">Faceoff +/-</th>
+                <th><a href="javascript:SortTable(9,'N');">GameScore</a> </th>
+            </tr>
+
+        </thead>
+        <tbody>
+        {{#if playerData}}
+        {{#each playerData}}
+        <tr>
+            <th class="playername" scope="row">{{this.Player}} </th>
+            <td class="toiclass">{{this.TOI}}</td>
+            <td>{{this.Goals}}</td>
+            <td>{{this.Total_Assists}}</td>
+            <td>{{this.Shots}}</td>
+            <td>{{this.Shots_Blocked}}</td>
+            <td>{{this.CD}}</td>
+            <td>{{this.GD}}</td>
+            <td>{{this.PD}}</td>
+            <td>{{this.FD}}</td>
+            <th scope="row">{{this.GameScore}}</th>
+            <td >{{this.GameScore}} </td>
+        </tr>
+        {{/each}}
+        {{/if}}
+
+        {{#if goalieData}}
+            {{#each goalieData}}
+                <tr>
+                    <th class="playername" scope="row">{{this.Player}} </th>
+                    <td></td>
+                    <td>{{this.goals}}</td>
+                    <td></td>
+                    <td>{{this.shots}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <th scope="row">{{this.g_GameScore}}</th>
+                    <td >{{this.g_GameScore}} </td>
+                </tr>
+            {{/each}}
+        {{/if}}
+        </tbody>
+    </table>
+</div>
+<div id="credits" class="container">
+    <div class="row">
+        <div class="col-3">
+            <p>Data: @NatStatTrick<br>GameScore Model: @domluszczyszyn<br>Ducks Card: @cepvi0</p>
+        </div>
+        <div class="col-9">
+            <p style="text-align: center"><strong>Percentile of Player Performance</strong><br>Based on every game played by every player
+            NHL Season 2007 - 2016</p>
+            <div id="tablediv">
+                <table id="percentile" class="table">
+                    <tr>
+                        <td style="color:white; background-color: #FF9D19">Bad<br>0-10%</td>
+                        <td style="color:white; background-color: #FFD49A" >Poor<br>10-35%</td>
+                        <td style="color:white; background-color: #9DC4F6" >Fine<br>35-65%</td>
+                        <td style="color:white; background-color: #2A82F2" >Good<br>65-90%</td>
+                        <td style="color:white; background-color: #003f91" >Great<br>90-100%</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Adjust the Ducks logo as it appears larger than all other logos
+    var logos = document.getElementsByClassName("logo");
+
+    for(var j=0;j<logos.length;j++) {
+        if(logos[j].src === "https://upload.wikimedia.org/wikipedia/en/7/72/Anaheim_Ducks.svg") {
+            logos[j].classList.add("duckslogo")
+
+        }
+    }
+
+</script>
+
+<script type="text/javascript">
+    /*
+       Willmaster Table Sort
+       Version 1.1
+       August 17, 2016
+       Updated GetDateSortingKey() to correctly sort two-digit months and days numbers with leading 0.
+       Version 1.0, July 3, 2011
+
+       Will Bontrager
+       https://www.willmaster.com/
+       Copyright 2011,2016 Will Bontrager Software, LLC
+
+       This software is provided "AS IS," without
+       any warranty of any kind, without even any
+       implied warranty such as merchantability
+       or fitness for a particular purpose.
+       Will Bontrager Software, LLC grants
+       you a royalty free license to use or
+       modify this software provided this
+       notice appears on all copies.
+    */
+    //
+    // One placed to customize - The id value of the table tag.
+
+    var TableIDvalue = "indextable";
+
+    //
+    //////////////////////////////////////
+    var TableLastSortedColumn = -1;
+    function SortTable() {
+        var sortColumn = parseInt(arguments[0]);
+        var type = arguments.length > 1 ? arguments[1] : 'T';
+        var dateformat = arguments.length > 2 ? arguments[2] : '';
+        var table = document.getElementById(TableIDvalue);
+        var tbody = table.getElementsByTagName("tbody")[0];
+        var rows = tbody.getElementsByTagName("tr");
+        var arrayOfRows = new Array();
+        type = type.toUpperCase();
+        dateformat = dateformat.toLowerCase();
+        for(var i=0, len=rows.length; i<len; i++) {
+            arrayOfRows[i] = new Object;
+            arrayOfRows[i].oldIndex = i;
+            var celltext = rows[i].getElementsByTagName("td")[sortColumn].innerHTML.replace(/<[^>]*>/g,"");
+            if( type=='D' ) { arrayOfRows[i].value = GetDateSortingKey(dateformat,celltext); }
+            else {
+                var re = type=="N" ? /[^\.\-\+\d]/g : /[^a-zA-Z0-9]/g;
+                arrayOfRows[i].value = celltext.replace(re,"").substr(0,25).toLowerCase();
+            }
+        }
+        if (sortColumn == TableLastSortedColumn) { arrayOfRows.reverse(); }
+        else {
+            TableLastSortedColumn = sortColumn;
+            switch(type) {
+                case "N" : arrayOfRows.sort(CompareRowOfNumbers); break;
+                case "D" : arrayOfRows.sort(CompareRowOfNumbers); break;
+                default  : arrayOfRows.sort(CompareRowOfText);
+            }
+        }
+        var newTableBody = document.createElement("tbody");
+        for(var i=0, len=arrayOfRows.length; i<len; i++) {
+            newTableBody.appendChild(rows[arrayOfRows[i].oldIndex].cloneNode(true));
+        }
+        table.replaceChild(newTableBody,tbody);
+    } // function SortTable()
+
+    function CompareRowOfText(a,b) {
+        var aval = a.value;
+        var bval = b.value;
+        return( aval == bval ? 0 : (aval > bval ? 1 : -1) );
+    } // function CompareRowOfText()
+
+    function CompareRowOfNumbers(a,b) {
+        var aval = /\d/.test(a.value) ? parseFloat(a.value) : 0;
+        var bval = /\d/.test(b.value) ? parseFloat(b.value) : 0;
+        return( aval == bval ? 0 : (aval > bval ? 1 : -1) );
+    } // function CompareRowOfNumbers()
+
+    function GetDateSortingKey(format,text) {
+        if( format.length < 1 ) { return ""; }
+        format = format.toLowerCase();
+        text = text.toLowerCase();
+        text = text.replace(/^[^a-z0-9]*/,"");
+        text = text.replace(/[^a-z0-9]*$/,"");
+        if( text.length < 1 ) { return ""; }
+        text = text.replace(/[^a-z0-9]+/g,",");
+        var date = text.split(",");
+        if( date.length < 3 ) { return ""; }
+        var d=0, m=0, y=0;
+        for( var i=0; i<3; i++ ) {
+            var ts = format.substr(i,1);
+            if( ts == "d" ) { d = date[i]; }
+            else if( ts == "m" ) { m = date[i]; }
+            else if( ts == "y" ) { y = date[i]; }
+        }
+        d = d.replace(/^0/,"");
+        if( d < 10 ) { d = "0" + d; }
+        if( /[a-z]/.test(m) ) {
+            m = m.substr(0,3);
+            switch(m) {
+                case "jan" : m = String(1); break;
+                case "feb" : m = String(2); break;
+                case "mar" : m = String(3); break;
+                case "apr" : m = String(4); break;
+                case "may" : m = String(5); break;
+                case "jun" : m = String(6); break;
+                case "jul" : m = String(7); break;
+                case "aug" : m = String(8); break;
+                case "sep" : m = String(9); break;
+                case "oct" : m = String(10); break;
+                case "nov" : m = String(11); break;
+                case "dec" : m = String(12); break;
+                default    : m = String(0);
+            }
+        }
+        m = m.replace(/^0/,"");
+        if( m < 10 ) { m = "0" + m; }
+        y = parseInt(y);
+        if( y < 100 ) { y = parseInt(y) + 2000; }
+        return "" + String(y) + "" + String(m) + "" + String(d) + "";
+    } // function GetDateSortingKey()
+</script>
+
+<script>
+    // Adjust the color of the GameScore in the table based on score
+    var gscolor = $('.players td:last-child');
+    for(var i=0; i < gscolor.length; i++){
+        if (gscolor[i].textContent > 1.4) {
+            gscolor[i].bgColor ="#003f91";
+            gscolor[i].style.color ="#003f91";
+        }
+        else if (gscolor[i].textContent > .75) {
+            gscolor[i].bgColor='#2A82F2';
+            gscolor[i].style.color='#2A82F2';
+        }
+
+        else if (gscolor[i].textContent > .2) {
+            gscolor[i].bgColor='#9DC4F6';
+            gscolor[i].style.color='#9DC4F6';
+        }
+        else if (gscolor[i].textContent > -.45) {
+            gscolor[i].bgColor='#FFD49A';
+            gscolor[i].style.color='#FFD49A';
+        }
+        else {
+            gscolor[i].bgColor='#FF9D19';
+            gscolor[i].style.color='#FF9D19';
+        }
+    }
+
+</script>
+
+<script>
+    //Change the time on ice from a decimal to actual time
+    function minTommss(minutes){
+        var sign = minutes < 0 ? "-" : "";
+        var min = Math.floor(Math.abs(minutes));
+        var sec = Math.floor((Math.abs(minutes) * 60) % 60);
+        return sign + (min < 10 ? "0" : "") + min + ":" + (sec < 10 ? "0" : "") + sec;
+    }
+
+    var oldTOI = document.getElementsByClassName("toiclass");
+    var newTOI;
+
+    for(var i =0; i<oldTOI.length;i++) {
+        oldTOI[i].textContent = minTommss(oldTOI[i].textContent);
+    }
+
+</script>

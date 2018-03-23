@@ -1,0 +1,61 @@
+.headerbox {
+    height: 135px;
+    margin-top: 30px;
+}
+
+#middleheader {
+    font-size:33px;
+    text-align: center;
+    font-weight: bold;
+    background-color: transparent;
+
+}
+#date {
+    font-size: 20px;
+    vertical-align: 75%;
+
+}
+
+.players {
+    width: 100%;
+    text-align: center;
+}
+
+
+.playername {
+    text-align: left;
+    width: 20%;
+}
+td tr {
+    height: 10px;
+}
+
+.table td, .table th {
+    padding: .4rem;
+}
+
+a {
+    color:black;
+}
+
+#credits {
+    font-size: 12px;
+}
+
+#tablediv {
+    text-align: center;
+    width: 100%;
+}
+
+#percentile {
+    font-weight: bold;
+
+}
+.logo {
+    height: 100%;
+}
+.duckslogo {
+    height: 90%;
+    width: 153%;
+    padding-top: 25px;
+}
