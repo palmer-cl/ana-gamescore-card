@@ -6,3 +6,5 @@ The webscraper portion is built in Python. It goes to the website NaturalStatTri
 Using mySQL and PhpMyAdmin to store and manipulate data. 
 ## Frontend
 The frontend is Javascript with HTML/CSS and uses Node.js to communicate with the database. Frameworks used: Express, Handlebars, jQuery.
+
+![GameScore Card Example](https://pbs.twimg.com/media/DYn04T8VoAAzF-j.jpg)
