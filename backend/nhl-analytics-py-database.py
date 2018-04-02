@@ -2,7 +2,6 @@ import bs4 as bs
 import urllib
 import contextlib
 import os
-from openpyxl import load_workbook
 import pymysql.cursors
 
 # ##########################################################################################################################
@@ -30,13 +29,6 @@ GameNum='21135'
 
 ##Build full URL##
 GAMELINK = ('http://www.naturalstattrick.com/game.php?season=20172018&game=' + GameNum + '&view=limited')
-
-##Open the Excel Workbook##
-wb = load_workbook(filename="nhl-test-py.xlsx")
-sht1= wb['AllSit-Individual']
-sht2= wb['5v5-On-Ice']
-sht3= wb['AllSit- Goalies']
-sht4= wb['Season GameScore']
 
 ##Build 4 arrays ##
 game_info=[]
@@ -275,182 +267,6 @@ for i in master_ind_all_sit:
     conn.commit()
 
 
-
-
-
-
-
-
-# # ##########################################################################################################################
-# #
-# #                                Part 1B: Start Printing to Excel
-# #
-# # ##########################################################################################################################
-#
-# ##Define a function for writing to Excel Rows ##
-# def writeToRows(sheet,list):
-#     row = 1
-#     col = 1
-#     while sheet.cell(row=row, column=1).value != None:
-#         row += 1
-#
-#     for i in list:
-#         col = 1
-#         for element in i:
-#             if col > 3:
-#                 if element == '-':
-#                     element = 0
-#                 sheet.cell(row=row, column=col).value = float(element)
-#                 col += 1
-#             else:
-#                 if element == '-':
-#                     element = 0
-#                 sheet.cell(row=row, column=col).value = element
-#                 col += 1
-#         row += 1
-#
-#     return
-#
-#
-# ##COPY TO EXCEL##
-# print "Part 1: Starting to copy to Excel now..."
-# writeToRows(sht1,master_ind_all_sit)
-# print "Part 1: All Situations EXCEL complete..."
-#
-# print "Part 2: Starting to copy to Excel now..."
-# writeToRows(sht2,master_on_ice_5v5)
-# print "Part 2: On Ice Data EXCEL complete..."
-#
-# print "Part 3: Starting to copy to Excel now..."
-#
-# row = 1
-# col = 1
-# while (sht3.cell(row=row,column=1).value != None):
-#     row+=1
-#
-# if len(FinalGoalieList) == 5:
-#     for i in FinalGoalieList:
-#         if col > 3:
-#             if i == '-':
-#                 i = 0
-#             sht3.cell(row=row,column=col).value = float(i)
-#             col +=1
-#         else:
-#             if i == '-':
-#                 i = 0
-#             sht3.cell(row=row, column=col).value = i
-#             col += 1
-# else:
-#     for i in FinalGoalieList:
-#         col=1
-#         for e in i:
-#             if col >3:
-#                 if i == '-':
-#                     i = 0
-#                 sht3.cell(row=row, column=col).value = float(e)
-#                 col +=1
-#             else:
-#                 if i == '-':
-#                     i = 0
-#                 sht3.cell(row=row, column=col).value = e
-#                 col +=1
-#
-#         row+=1
-#
-#     print "Part 3: GOALIES to EXCEL complete..."
-#
-# ### Print final part of season game score sheets ###
-# # ##########################################################################################################################
-# #
-# #                                Part 2 : Season Data
-# #
-# # ##########################################################################################################################
-# # # ##COPY TO EXCEL##
-# master_on_ice=[]
-# master_ind=[]
-# header1= ['Player', 'Position', 'GP', '5v5oi_TOI', '5v5oi_CF', '5v5oi_CA', '5v5oi_CF%', '5v5oi_FF', '5v5oi_FA', '5v5oi_FF%',
-#          '5v5oi_SF', '5v5oi_SA', '5v5oi_SF%', '5v5oi_GF', '5v5oi_GA', '5v5oi_GF%', '5v5oi_SCF', '5v5oi_SCA', '5v5oi_SCF%',
-#           '5v5oi_HDCF', '5v5oi_HDCA', '5v5oi_HDCF%', '5v5oi_HDGF', '5v5oi_HDGA', '5v5oi_HDGF%', '5v5oi_MDCF', '5v5oi_MDCA',
-#           '5v5oi_MDCF%', '5v5oi_MDGF', '5v5oi_MDGA', '5v5oi_MDGF%', '5v5oi_LDCF', '5v5oi_LDCA', '5v5oi_LDCF%', '5v5oi_LDGF',
-#           '5v5oi_LDGA', '5v5oi_LDGF%', '5v5oi_On-Ice SH%', '5v5oi_On-Ice SV%', '5v5oi_PDO', '5v5oi_Off. Zone Faceoffs',
-#           '5v5oi_Neu. Zone Faceoffs', '5v5oi_Def. Zone Faceoffs', '5v5oi_Off Zone Faceoff %']
-# header2 = ['Player', 'Position', 'GP', 'TOI', 'Goals', 'Total Assists', 'First Assists', 'Sencond Assists', 'Total Points',
-#            'Shots', 'SH%', 'iCF', 'iSCF', 'iHDCF', 'Rebounds Created', 'PIM' , 'Total Penalities', 'Minors', 'Majors',
-#            'Misconduct', 'Pen Drawn', 'Giveaways', 'Takeaways', 'Hits', 'Hits Taken', 'Shots Blocked','Faceoffs Won',
-#            'Faceoffs Lost', 'Faceoff %']
-#
-# def resetSeasonData():
-#     playerdata = playerdatasaved = ""
-#     counter = 1
-#
-#     return
-#
-# def grabSeasonData(head,list):
-#     counter = 1
-#
-#     for record in soup.find_all('tr'):
-#         playerdata = []
-#         for data in record.find_all('td'):
-#             new = (data.text).encode('utf-8')
-#             new = new.replace('\xa0', ' ')
-#             new = new.replace('\xc2', '')
-#             playerdata.extend([new])
-#
-#         if counter == 1:
-#             list.append(head)
-#
-#         else:
-#             playerdata.pop(0)
-#             list.append(playerdata)
-#         counter += 1
-#
-#     return
-#
-# ##Second set of team data (On-Ice) ###
-# print "Gather Season data starting now..."
-# with contextlib.closing(urllib.urlopen('https://www.naturalstattrick.com/playerteams.php?season=20172018&stype=2&sit=5v5&score=all&stdoi=oi&rate=n&team=ANA&pos=S&loc=B&toi=0&gpfilt=none&fd=&td=&tgp=82&lines=single')) as source:
-#     soup = bs.BeautifulSoup(source, "html.parser")
-#
-# ## Reset and gather new data ##
-# resetSeasonData()
-# grabSeasonData(header1,master_on_ice)
-#
-#
-# ##Second set of team data (Individual) ###
-# source = urllib.urlopen('https://www.naturalstattrick.com/playerteams.php?season=20172018&stype=2&sit=all&score=all&stdoi=std&rate=n&team=ANA&pos=S&loc=B&toi=0&gpfilt=none&fd=&td=&tgp=82&lines=single').read()
-# soup = bs.BeautifulSoup(source, "html.parser")
-#
-# ## Reset and gather new data ##
-# resetSeasonData()
-# grabSeasonData(header2,master_ind)
-#
-#
-# ## Combining the list using the map function with lambda ##
-# #Confirm our list was combined into one long list
-# rawcombined = map(lambda a, b: a + b, master_on_ice, master_ind)
-#
-# #Remove the data we don't want to keep#
-# for i in rawcombined:
-#     del i[44:47]
-#
-# ##Print season to excel sheet before google sheet ###
-# row = 1
-# for element in rawcombined:
-#     col = 1
-#     if row==1:
-#         print "Skip Header"
-#     else:
-#         for i in element:
-#             if col > 2:
-#                 sht4.cell(row=row,column=col).value = float(i)
-#                 col += 1
-#             else:
-#                 sht4.cell(row=row, column=col).value = i
-#                 col += 1
-#
-#     row +=1
-#
-# wb.save('nhl-test-py.xlsx')
 conn.close()
 print "All processes complete."
 print "*****DB SAVED****"
