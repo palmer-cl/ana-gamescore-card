@@ -55,11 +55,11 @@ h2gamedate = head
 print tail
 
 tail.encode("utf-8")
-a,b,c = tail.split(" ")
-c=c.split("\n")
+allGameInfo = tail.split(" ")
 
-VisitingScore = a
-HomeScore = c[0]
+
+VisitingScore = allGameInfo[0]
+HomeScore = allGameInfo[2][0]
 
 game_info.append(h2gamedate.encode("utf-8"))
 game_info.append(VisitingTeam.encode("utf-8"))
