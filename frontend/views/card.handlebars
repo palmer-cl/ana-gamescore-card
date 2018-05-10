@@ -1,0 +1,246 @@
+<script>
+    $(document).ready(function(){
+
+       var playername = document.getElementById("playerheader").textContent;
+       str ="/heads/" + playername + ".png";
+       $("#playerlogo").attr("src",str);
+
+    });
+
+    $(document).ready(function() {
+        var playername = document.getElementById("playerheader").textContent;
+        var send = {};
+        send.name = playername;
+
+        $.ajax({
+            url: '/get-chart-data',
+            method: 'POST',
+            data: send,
+            complete: function(e){
+                data= e.responseJSON;
+                console.log(data);
+
+                //3 Arrays for 3 pieces of information
+                var Dates = [];
+                var corsiData = [];
+                var GSData = [];
+
+                data.forEach(function(e) {
+                    date = e.GameDate;
+                    date = date.split("T");
+                    date = date[0];
+                    date = date.substr(1);
+                    date = date.split("-");
+                    date = date[1] + "-" + date[2] + "-" + date[0];
+                    displayDate = date;
+                    console.log(displayDate);
+
+                    Dates.push(displayDate);
+                    corsiData.push(e.CD);
+                    GSData.push(e.GameScore);
+
+                });
+
+                //Charts
+                var ctx = document.getElementById("myChart");
+                var myChart = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: Dates,
+                        datasets: [{
+                            label: '30 day Corsi Differential',
+                            data: corsiData,
+                            backgroundColor: [
+                                'rgba(252, 76, 2, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(252,76,2,1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        legend:{
+                            labels:{boxWidth: 25
+                            }
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }],
+                            xAxes: [{
+                                display: false
+                            }]
+                        }
+                    }
+                });
+
+                var ctx2 = document.getElementById("myChart2");
+                var myChart2 = new Chart(ctx2, {
+                    type: 'line',
+                    data: {
+                        labels: Dates,
+                        datasets: [{
+                            label: '30 day GameScore',
+                            data: GSData,
+                            backgroundColor: [
+                                'rgba(176,152,98, 0.2)'
+                            ],
+                            borderColor: [
+                                'rgba(176,152,98,1)'
+                            ],
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        legend:{
+                            labels:{boxWidth: 25
+                            }
+                        },
+                        scales: {
+                            yAxes: [{
+                                ticks: {
+                                    beginAtZero:true
+                                }
+                            }],
+                            xAxes: [{
+                                display: false
+                            }]
+                        }
+                    }
+                });
+
+            }
+        });
+
+
+    });
+
+    $(document).ready(function(){
+       var playerStat = document.getElementsByClassName("stat");
+       var teamStat= document.getElementsByClassName("teamstat");
+       var diff = document.getElementsByClassName("diff");
+
+       var i = 0;
+
+       while (i < playerStat.length) {
+           if (i === 0 || i === 8) {
+               diff[i].textContent = (playerStat[i].textContent -teamStat[i].textContent).toFixed(2);
+           }
+           else {
+               diff[i].textContent = (playerStat[i].textContent - teamStat[i].textContent);
+           }
+           if (diff[i].textContent > 0){
+               diff[i].style.color= "#09BD00";
+           }
+           if (diff[i].textContent < 0){
+               diff[i].style.color= "#E92000";
+           }
+           i++;
+       }
+
+
+
+    });
+
+
+</script>
+
+<div id="cardbox">
+    <div id="titlebox">
+        <h1>Anaheim Ducks Player Stat Card</h1>
+    </div>
+    <div id="contentbox">
+        <div id="imagebox">
+            <div style="height: 170px; width: 100%;">
+                <img id="duckslogo" src="https://upload.wikimedia.org/wikipedia/en/7/72/Anaheim_Ducks.svg">
+            </div>
+            <div style="height: 260px; width: 100%; position: relative;">
+                <img id="playerlogo" src="#" style="width: 100%; position: absolute; bottom: 0">
+            </div>
+            <div style="height: 72px; width: 100%;text-align: center">
+                <h2 id="playerheader">{{player.Player}}</h2>
+            </div>
+        </div>
+        <div id="statbox" class="container">
+            <div class="row statbox">
+                <div class="col statminibox">
+                    <h5>TOI</h5>
+                    <span class="stat">{{player.TOI}}</span>
+                    <span class="minilabel">Position Avg: </span><span class="teamstat minilabel"> {{teamNums.TeamTOI}}</span><br>
+                    <span class="minilabel">Difference: </span><span class="diff">10</span>
+                </div>
+                <div class="col statminibox">
+                    <h5>Goals</h5>
+                    <span class="stat">{{player.Goals}}</span>
+                    <span class="minilabel">Position Avg: </span><span class="teamstat minilabel"> {{teamNums.TeamGoals}}</span><br>
+                    <span class="minilabel">Difference: </span><span class="diff">10</span>
+                </div>
+                <div class="col statminibox">
+                    <h5>Assists</h5>
+                    <span class="stat">{{player.Assists}}</span>
+                    <span class="minilabel">Position Avg: </span><span class="teamstat minilabel"> {{teamNums.TeamAssists}}</span><br>
+                    <span class="minilabel">Difference: </span><span class="diff">10</span>
+                </div>
+            </div>
+            <div class="row statbox">
+                <div class="col statminibox">
+                    <h5>Shots</h5>
+                    <span class="stat">{{player.Shots}}</span>
+                    <span class="minilabel">Position Avg: </span><span class="teamstat minilabel"> {{teamNums.TeamShots}}</span><br>
+                    <span class="minilabel">Difference: </span><span class="diff">10</span>
+                </div>
+                <div class="col statminibox">
+                    <h5>Blocks</h5>
+                    <span class="stat">{{player.Blocks}}</span>
+                    <span class="minilabel">Position Avg: </span><span class="teamstat minilabel"> {{teamNums.TeamBlocks}}</span><br>
+                    <span class="minilabel">Difference: </span><span class="diff">10</span>
+                </div>
+                <div class="col statminibox">
+                    <h5>Corsi +/-</h5>
+                    <span class="stat">{{player.CD}}</span>
+                    <span class="minilabel">Position Avg: </span><span class="teamstat minilabel"> {{teamNums.TeamCD}}</span><br>
+                    <span class="minilabel">Difference: </span><span class="diff">10</span>
+                </div>
+            </div>
+            <div class="row statbox">
+                <div class="col statminibox">
+                    <h5>Penalty +/-</h5>
+                    <span class="stat">{{player.PD}}</span>
+                    <span class="minilabel">Position Avg: </span><span class="teamstat minilabel"> {{teamNums.TeamPD}}</span><br>
+                    <span class="minilabel">Difference: </span><span class="diff">10</span>
+                </div>
+                <div class="col statminibox">
+                    <h5>Faceoff +/-</h5>
+                    <span class="stat">{{player.FD}}</span>
+                    <span class="minilabel">Position Avg: </span><span class="teamstat minilabel"> {{teamNums.TeamFD}}</span><br>
+                    <span class="minilabel">Difference: </span><span class="diff">10</span>
+                </div>
+                <div class="col statminibox">
+                    <h5>GameScore</h5>
+                    <span class="stat">{{player.GameScore}}</span>
+                    <span class="minilabel">Position Avg: </span><span class="teamstat minilabel"> {{teamNums.TeamGameScore}}</span><br>
+                    <span class="minilabel">Difference: </span><span class="diff">10</span>
+                </div>
+            </div>
+            <div class="row statbox">
+                <div class="col">
+                    <canvas id="myChart" width="225" height="130"></canvas>
+                </div>
+                <div class="col" >
+                    <canvas id="myChart2" width="225" height="130"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="creditsrow" class="container">
+        <div class="row">
+            <div class="col bottom">Data: @NatStatTrick</div>
+            <div class="col bottom">Created By: @Cepvi0 </div>
+            <div class="col bottom">GS: @domluszczyszyn</div>
+        </div>
+        <p class="bottom">Position metrics are grouped F,D. >100 min played.</p>
+    </div>
+</div>

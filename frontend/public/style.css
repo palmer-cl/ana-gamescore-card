@@ -10,11 +10,6 @@
     background-color: transparent;
 
 }
-#date {
-    font-size: 20px;
-    vertical-align: 75%;
-
-}
 
 .players {
     width: 100%;
@@ -58,4 +53,100 @@ a {
     height: 90%;
     width: 153%;
     padding-top: 25px;
+}
+
+#cardbox {
+    width: 800px;
+    height: 635px;
+    border: 5px solid black;
+    margin: 40px 40px;
+}
+
+#titlebox {
+    height: 80px;
+    width: 100%;
+    text-align: center;
+}
+
+#contentbox {
+    height: 507px;
+    width: 100%;
+}
+
+#imagebox {
+    height: 100%;
+    width: 37%;
+    float: left;
+    padding-left: 15px;
+}
+
+.bottom {
+    text-align: center;
+    font-size: 12px;
+}
+
+h1 {
+    padding-top: 10px;
+    font-size: 2.9rem;
+}
+
+h5 {
+    margin-bottom: 0;
+}
+
+#duckslogo {
+    width: 90%;
+    height: 90%;
+    padding-top: 35px;
+}
+
+.statbox {
+    height:125.5px;
+    margin-left: 38%;
+}
+
+.statminibox {
+    text-align: center;
+}
+
+.stat {
+    font-size: 2.0rem;
+    font-weight: bold;
+    display: block;
+}
+
+.diff {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.minilabel {
+    font-size: 14px;
+}
+#cardbox {
+    background-color: white;
+    position: relative;
+}
+#cardbox:after {
+    content: '';
+    position: absolute;
+    top: -25px;
+    left: -25px;
+    right: -25px;
+    bottom: -25px;
+    background: #FC4C02;
+    z-index: -1;
+}
+
+.col {
+    max-width: 50%;
+}
+
+.build {
+    border: 3px solid red;
+    height: 300px;
+}
+
+.tiny {
+    height: 10%;
 }

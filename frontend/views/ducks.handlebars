@@ -1,14 +1,14 @@
 <div class="container">
     <div class="row">
-        <div class=" headerbox col-2">
+        <div class=" headerbox col-3">
             <img class="logo" style="float:left;" src="{{visitingTeamImgSrc}}">
         </div>
-        <div id="middleheader" class="headerbox col-8">
+        <div id="middleheader" class="headerbox col-6">
             {{{header}}}<br>
             {{{score}}}<br>
             <span id="date">{{{date}}}</span>
         </div>
-        <div class="headerbox col-2">
+        <div class="headerbox col-3">
            <img class="logo" style="float:right;" src="{{homeTeamImgSrc}}">
         </div>
     </div>
@@ -19,6 +19,7 @@
         <thead>
             <tr>
                 <th class="playername" scope="col">Player</th>
+                <th scope="col">Team</th>
                 <th scope="col">TOI</th>
                 <th scope="col">Goals</th>
                 <th scope="col">Assists</th>
@@ -28,7 +29,7 @@
                 <th scope="col">Goal +/-</th>
                 <th scope="col">Penalty +/-</th>
                 <th scope="col">Faceoff +/-</th>
-                <th><a href="javascript:SortTable(9,'N');">GameScore</a> </th>
+                <th><a href="javascript:SortTable(10,'N');">GameScore</a> </th>
             </tr>
 
         </thead>
@@ -37,6 +38,7 @@
         {{#each playerData}}
         <tr>
             <th class="playername" scope="row">{{this.Player}} </th>
+            <td><img class="tiny" src={{this.team}}></td>
             <td class="toiclass">{{this.TOI}}</td>
             <td>{{this.Goals}}</td>
             <td>{{this.Total_Assists}}</td>
@@ -56,6 +58,7 @@
             {{#each goalieData}}
                 <tr>
                     <th class="playername" scope="row">{{this.Player}} </th>
+                    <td><img class="tiny" src={{this.team}}></td>
                     <td></td>
                     <td>{{this.goals}}</td>
                     <td></td>
@@ -76,7 +79,7 @@
 <div id="credits" class="container">
     <div class="row">
         <div class="col-3">
-            <p>Data: @NatStatTrick<br>GameScore Model: @domluszczyszyn<br>Ducks Card: @cepvi0</p>
+            <p>Data: @NatStatTrick<br>GameScore Model: @domluszczyszyn<br>GS Card: @cepvi0</p>
         </div>
         <div class="col-9">
             <p style="text-align: center"><strong>Percentile of Player Performance</strong><br>Based on every game played by every player
@@ -95,21 +98,17 @@
         </div>
     </div>
 </div>
-
-
 <script>
-    // Adjust the Ducks logo as it appears larger than all other logos
-    var logos = document.getElementsByClassName("logo");
-
-    for(var j=0;j<logos.length;j++) {
-        if(logos[j].src === "https://upload.wikimedia.org/wikipedia/en/7/72/Anaheim_Ducks.svg") {
-            logos[j].classList.add("duckslogo")
-
-        }
-    }
-
-</script>
-
+//   var logos = document.getElementsByClassName("logo");
+//
+//    for(var j=0;j<logos.length;j++) {
+//        if(logos[j].src === "https://upload.wikimedia.org/wikipedia/en/7/72/Anaheim_Ducks.svg") {
+//            logos[j].classList.add("duckslogo")
+//
+//        }
+//    }
+//
+//</script>
 <script type="text/javascript">
     /*
        Willmaster Table Sort
@@ -231,9 +230,13 @@
         return "" + String(y) + "" + String(m) + "" + String(d) + "";
     } // function GetDateSortingKey()
 </script>
-
 <script>
-    // Adjust the color of the GameScore in the table based on score
+    var tinyteamlogos = $('.players td:nth-child(2)');
+    for (var j=0; tinyteamlogos.length; j++) {
+        tinyteamlogos[j].style.color = "Red"
+    }
+</script>
+<script>
     var gscolor = $('.players td:last-child');
     for(var i=0; i < gscolor.length; i++){
         if (gscolor[i].textContent > 1.4) {
@@ -260,9 +263,7 @@
     }
 
 </script>
-
 <script>
-    //Change the time on ice from a decimal to actual time
     function minTommss(minutes){
         var sign = minutes < 0 ? "-" : "";
         var min = Math.floor(Math.abs(minutes));

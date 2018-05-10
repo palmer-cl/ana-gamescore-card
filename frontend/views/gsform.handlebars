@@ -1,0 +1,30 @@
+<div class="container">
+    <h3>League Top GameScore Card</h3>
+    <form method="post" action="/gamescore-all">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Date for Game</label>
+            <select class="form-control" id="date" name="date">
+                {{#if games}}
+                    {{#each games}}
+                        <option value="{{this.gamenum}}">{{this.GameDate}} - {{this.vis_team}} @ {{this.home_team}}</option>
+                    {{/each}}
+                {{/if}}
+            </select>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+    <h3>Specific Game GameScore Card</h3>
+    <form method="post" action="/gamescore-all-filtered">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Date for Game</label>
+            <select class="form-control" id="date" name="date">
+                {{#if games}}
+                    {{#each games}}
+                        <option value="{{this.gamenum}}">{{this.GameDate}} - {{this.vis_team}} @ {{this.home_team}}</option>
+                    {{/each}}
+                {{/if}}
+            </select>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>

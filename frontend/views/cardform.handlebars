@@ -1,0 +1,15 @@
+<div class="container">
+    <form method="post" action="/card">
+        <div class="form-group">
+            <label for="exampleFormControlSelect1">Player Name for Stat Card</label>
+            <select class="form-control" id="name" name="name">
+                {{#if players}}
+                    {{#each players}}
+                        <option>{{this.Player}}</option>
+                    {{/each}}
+                {{/if}}
+            </select>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
