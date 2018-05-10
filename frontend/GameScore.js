@@ -456,60 +456,15 @@ app.get('/gamescore', function (req, res) {
                     else {
                         console.log(results);
                         var players = results;
-                        var CALC_GS = (0.0);
-
+                        
                         //Start GameScore extraction, calculation and reinsertion
                         players.forEach(function (element) {
-                            CALC_GS = (0.0);
+                            let CALC_GS = (0.0);
                             //Player Game Score = (0.75 * G) + (0.7 * A1) + (0.55 * A2) + (0.075 * SOG) + (0.05 * BLK) + (0.15 * PD) – (0.15 * PT) +
                             // (0.01 * FOW) – (0.01 * FOL) + (0.05 * CF) – (0.05 * CA) + (0.15 * GF) – (0.15* GA)
 
-                            console.log(typeof (element.GameScore));
-
-                            CALC_GS = (element.Goals * .75);
-                            console.log(element.Goals);
-
-                            CALC_GS += (element.First_Assists * .7);
-                            console.log(element.First_Assists);
-
-                            CALC_GS += (element.Second_Assists * .55);
-                            console.log(element.Second_Assists);
-
-                            CALC_GS += (element.Shots * .075);
-                            console.log(element.Shots);
-
-                            CALC_GS += (element.Shots_Blocked * .05);
-                            console.log(element.Shots_Blocked);
-
-                            CALC_GS += (element.Pen_Drawn * .15);
-                            console.log(element.Pen_Drawn);
-
-                            CALC_GS -= (element.Total_Penalties * .15);
-                            console.log(element.Total_Penalties);
-
-                            CALC_GS += (element.Faceoffs_Won * .01);
-                            console.log(element.Faceoffs_Won);
-
-                            CALC_GS -= (element.Faceoffs_Lost * .01);
-                            console.log(element.Faceoffs_Lost);
-
-                            CALC_GS += (element.CF * .05);
-                            console.log(element.CF);
-
-                            CALC_GS -= (element.CA * .05);
-                            console.log(element.CA);
-
-                            CALC_GS += (element.GF * .15);
-                            console.log(element.GF);
-
-                            CALC_GS -= (element.GA * .15);
-                            console.log(element.GA);
-
-                            CALC_GS = CALC_GS.toFixed(2);
-                            console.log(CALC_GS);
-
-
-                            console.log("update!");
+                            CALC_GS = calculateSkaterGS(element)
+                            
                             connection.query('UPDATE gs_allsit_ind_1718po a SET  a.GameScore= ? WHERE a.GameDate = ? AND a.Player = ?',
                                 [CALC_GS, context.SQLgameDate, element.Player]);
 
